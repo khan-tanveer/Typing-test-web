@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .maindiv{
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            background: #3498db;
+        }
+
+        .centerdiv{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        h1{
+            text-transform: capitalize;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ecf0f1;
+            text-shadow: 1px 2px 3px #2980b9;
+            font-size: 2.1rem;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        textarea{
+            background-color: #444;
+            box-shadow: 0 0 1px rgba(0,0,0,0.2);
+            border-radius: 10px 10px 0 0;
+            border: 20px solid #34495e;
+            color: white;
+        }
+
+        .mainbtn{
+            background: #ecf0f1;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 5px solid #34495e;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+       
+    </style>
+</head>
+<body>
+    
+    <div class="maindiv">
+        <div class="centerdiv">
+            <h1>welcome to typing test</h1>
+            <h2 id="msg"> </h2>
+            <br>
+            <textarea name="" id="mywords" cols="100" rows="10" placeholder="remember,be nice!"></textarea><br>
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+
+    <script>
+        const setOfWords = [ 
+            "my name is khan tanveer mustafa and i am a berozgar filhal." ,
+            "hope you guys are having fun this is a simple typing tester." ,
+            "if you want the source code then the link is given in the description so you can create your own version."
+        ];
+
+        const msg = document.getElementById('msg');
+        const typeWords  = document.getElementById('mywords');
+        const btn = document.getElementById('btn');
+        let startTime , endTime;
+
+        const  playGame = () => {
+            let randomNumber = Math.floor(Math.random()*setOfWords.length);
+            msg.innerText = setOfWords[randomNumber];
+            let date = new Date();
+            startTime = date.getTime();
+            btn.innerText = "Done";
+            
+        } 
+
+        const endPlay = () => {
+            let date = new Date();
+            endTime = date.getTime();
+            let totalTime = ((endTime - startTime)/ 1000);
+            console.log(totalTime);
+
+            let totalStr = typeWords.value;
+            let wordCount = wordCounter(totalStr);
+
+            let speed = Math.round((wordCount / totalTime) * 60);
+
+            let finalmsg = " you typed total at " + speed+ " words per minutes";
+            finalmsg += compareWords(msg.innerText,totalStr);
+            msg.innerText = finalmsg;
+
+
+
+        }
+
+        const compareWords = (str1,str2) => {
+            let words1 = str1.split(" ");
+            let words2 = str2.split(" ");
+            let cnt = 0;
+
+            // foreach loop use for check the 1 & 2 words are same or not
+            words1.forEach(function(item, index) {
+                if(item == words2[index])  {
+                    cnt++;
+                }
+                
+            })
+
+            let errorwords = (words1.length - cnt);
+            return ( cnt + " correct out of " + words1.length + " words and the total number of error are "
+            + errorwords+ ".");
+
+
+        }
+
+        const wordCounter = (str) => {
+            let response = str.split(" ").length;
+            console.log(response);
+
+            return response;
+        }
+
+        btn.addEventListener('click', function(){
+            if(this.innerText == 'Start'){
+                typeWords.disabled = false;
+                playGame();
+            }else if(this.innerText == "Done"){
+                typeWords.disabled = true;
+                btn.innerText = "start";
+                endPlay();
+
+            }
+        })
+
+
+    </script>
+</body>
+</html>
